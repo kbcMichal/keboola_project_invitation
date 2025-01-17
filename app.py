@@ -2,7 +2,6 @@ import streamlit as st
 from snowflake.snowpark.session import Session
 from snowflake.snowpark.functions import col
 import requests
-import json
 
 
 TOKEN = st.secrets['MANAGE_TOKEN']
@@ -100,9 +99,9 @@ def main():
         else:
             st.error(f"Failed to invite. Error: {response}")
 
-        st.info(
-            "Check out the [Snowflake Build Handbook tutorial](https://github.com/kbcMichal/snowflake_build_handbook)"
-        )
+    st.info(
+        "Check out the [Snowflake Build Handbook tutorial](https://github.com/kbcMichal/snowflake_build_handbook)"
+    )
 
 if __name__ == "__main__":
     main()
