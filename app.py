@@ -100,5 +100,9 @@ def main():
         else:
             st.error(f"Failed to invite. Error: {response}")
 
+        st.info(
+            "Check out the [Snowflake Build Handbook tutorial](https://github.com/kbcMichal/snowflake_build_handbook)"
+        )
+
 if __name__ == "__main__":
     main()
