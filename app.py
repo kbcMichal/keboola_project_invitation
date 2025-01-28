@@ -45,7 +45,7 @@ def insert_email_invitation(session, email, project_id):
         INSERT INTO EMAILS (EMAIL, PROJECT_ID)
         VALUES (?, ?)
     """
-    session.sql(query).bind([email, project_id]).collect()
+    session.execute_statement(query, params=[email, project_id])
 
 # API call to invite user to a project
 def invite_user_to_project(project_id, email):
