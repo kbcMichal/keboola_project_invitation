@@ -20,7 +20,7 @@ def create_snowflake_session():
         "database": st.secrets['DATABASE'],
         "schema": st.secrets['SCHEMA']
     }
-    return Session.builder.configs(connection_parameters).create()
+    return Session.builder.configs(connection_parameters).create()  # Create a Snowpark session
 
 # Load projects and emails from Snowflake
 def load_projects(session):
@@ -41,10 +41,11 @@ def get_next_project(projects_df, emails_df):
 
 # Insert a new email invitation into the emails table
 def insert_email_invitation(session, email, project_id):
-    session.sql(f"""
+    query = """
         INSERT INTO EMAILS (EMAIL, PROJECT_ID)
-        VALUES ('{email}', {project_id})
-    """).collect()
+        VALUES (?, ?)
+    """
+    session.sql(query).bind([email, project_id]).collect()
 
 # API call to invite user to a project
 def invite_user_to_project(project_id, email):
