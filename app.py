@@ -2,6 +2,7 @@ import streamlit as st
 from snowflake.snowpark.session import Session
 from snowflake.snowpark.functions import col
 import requests
+import pandas as pd
 
 
 TOKEN = st.secrets['MANAGE_TOKEN']
@@ -41,11 +42,10 @@ def get_next_project(projects_df, emails_df):
 
 # Insert a new email invitation into the emails table
 def insert_email_invitation(session, email, project_id):
-    query = """
-        INSERT INTO EMAILS (EMAIL, PROJECT_ID)
-        VALUES (?, ?)
-    """
-    session.execute_statement(query, params=[email, project_id])
+    # Create a single-row DataFrame with the data to insert
+    data = [(email, project_id)]
+    df = session.create_dataframe(data, schema=["EMAIL", "PROJECT_ID"])
+    df.write.mode("append").save_as_table("EMAILS")
 
 # API call to invite user to a project
 def invite_user_to_project(project_id, email):
